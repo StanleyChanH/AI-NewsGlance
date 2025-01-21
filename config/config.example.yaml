@@ -1,44 +1,49 @@
 # 爬虫配置
 crawler:
-  base_url: "https://www.aibase.com/zh/news/"  # 爬取的基础URL
-  max_articles: 10  # 最大爬取文章数量
-  timeout: 30  # 请求超时时间（秒）
-  user_agent: "Mozilla/5.0"  # 请求头User-Agent
+  base_url: "https://www.aibase.com/zh/news/"
+  max_articles: 10
+  timeout: 30
+  user_agent: "Mozilla/5.0"
 
 # 智谱AI配置
 zhipuai:
-  api_key: "your_api_key_here"  # 智谱API密钥
-  base_url: "https://open.bigmodel.cn/api/paas/v4"  # API基础URL
-  model: "glm-4"  # 使用的模型
-  temperature: 0.7  # 生成温度
-  max_tokens: 1000  # 最大token数
+  api_key: "your_api_key"
+  base_url: "https://open.bigmodel.cn/api/paas/v4"
+  model: "glm-4-flash"
+  temperature: 0.7
+  max_tokens: 1000
 
 # 早报生成配置
 generator:
-  title: "AI早报"  # 早报标题
-  max_summaries: 5  # 最大摘要数量
-  output_dir: "output"  # 输出目录
-  output_file: "daily_report.md"  # 输出文件名
+  title: "AI早报"
+  max_summaries: 5
+  output_dir: "output"
+  output_file: "daily_report.md"
 
 # 发送配置
 sender:
-  enabled: true  # 是否启用发送功能
-  type: "wechat_work"  # 发送方式：wechat_work | email
+  enabled: true
+  # 支持同时使用多个发送方式
+  types: ["smtp", "wechat_work"]
   
   # 企业微信机器人配置
   wechat_work:
     enabled: true
-    webhook_url: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=your_key_here"
+    webhook_url: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=your_key"
+    max_attachments: 10  # 最大附件数量
+    attachment_types: [".md"]  # 允许的附件类型
   
   # SMTP邮件配置
   smtp:
-    enabled: false
+    enabled: true
     host: "smtp.example.com"
     port: 465
     user: "your_email@example.com"
-    password: "your_password"
+    password: "your_email_password"
     from: "your_email@example.com"
     to: "recipient@example.com"
+    max_attachments: 10  # 最大附件数量
+    attachment_types: [".md", ".txt"]  # 允许的附件类型
 
 # 日志配置
 logging:
