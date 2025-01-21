@@ -7,6 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
+
 class Crawler:
     def __init__(self, base_url: str, max_articles: int = 10):
         self.base_url = base_url
