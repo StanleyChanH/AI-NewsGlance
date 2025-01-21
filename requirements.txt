@@ -1,0 +1,4 @@
+crawl4ai
+PyYAML>=6.0.0
+zhipuai
+beautifulsoup4
