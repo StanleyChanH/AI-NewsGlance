@@ -6,11 +6,14 @@
 2. 使用AI模型生成新闻摘要
 3. 生成格式化的Markdown早报
 4. 通过邮件或企业微信发送早报
+5. 保存原始文章的标题、正文和链接到Markdown文件
 
-## 工程化特性
-- 模块化架构，易于维护和扩展
-- 完善的代码质量保障体系
-- 清晰的文档和贡献指南
+## 主要功能
+- **新闻抓取**：从AIBase网站抓取最新AI相关新闻
+- **摘要生成**：使用智谱AI模型生成新闻摘要
+- **早报生成**：将摘要整理成格式化的Markdown早报
+- **多渠道发送**：支持邮件和企业微信发送
+- **原始文章保存**：自动保存原始文章内容，便于追溯和审核
 
 ## 安装指南
 
@@ -32,6 +35,38 @@ cp config/config.example.yaml config/config.yaml
 ```
 根据实际情况修改config.yaml中的配置项
 
+## 发送功能配置
+
+### 邮件发送配置
+```yaml
+smtp:
+  enabled: true
+  host: "smtp.qq.com"
+  port: 465
+  user: "your_email@qq.com"
+  password: "your_email_password"
+  from: "your_email@qq.com"
+  to: "recipient@example.com"
+```
+
+### 企业微信机器人配置
+```yaml
+wechat_work:
+  enabled: true
+  webhook_url: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=your_key"
+```
+
+## 使用示例
+
+### 运行程序
+```bash
+python src/main.py
+```
+
+### 查看输出
+- 早报文件：output/daily_report.md
+- 原始文章：output/raw_articles/
+
 ## 代码质量保障
 项目采用以下工具保证代码质量：
 - **代码格式化**: Black, isort
@@ -51,6 +86,7 @@ cp config/config.example.yaml config/config.yaml
 │   ├── summarizer/       # 摘要生成模块
 │   └── main.py           # 主程序
 ├── output/               # 输出目录
+│   ├── raw_articles/     # 原始文章Markdown文件
 ├── .github/              # GitHub配置
 │   ├── ISSUE_TEMPLATE/   # Issue模板
 │   └── PULL_REQUEST_TEMPLATE.md # PR模板
