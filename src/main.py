@@ -2,6 +2,7 @@ import sys
 import asyncio
 import yaml
 from pathlib import Path
+from typing import List
 
 # 将项目根目录添加到PYTHONPATH
 sys.path.append(str(Path(__file__).parent.parent))
@@ -41,12 +42,16 @@ async def main():
 
     # 爬取并处理文章
     summaries = []
+    attachments: List[Path] = []
     for num in article_numbers:
         article = await crawler.crawl_article(num)
         if article:
             summary = summarizer.summarize_article(article)
             if summary:
                 summaries.append(summary)
+                # 收集原始文章文件
+                raw_article_path = Path(__file__).parent.parent / "output" / "raw_articles"
+                attachments.extend(list(raw_article_path.glob(f"article_{num}_*.md")))
 
     # 生成并保存早报
     if summaries:
@@ -59,7 +64,7 @@ async def main():
             # 发送早报
             sender = Sender(config_path)
             if config.get('sender', {}).get('enabled', False):
-                if sender.send(report, config['generator']['title']):
+                if sender.send(report, config['generator']['title'], attachments):
                     print("早报发送成功")
                 else:
                     print("早报发送失败")
