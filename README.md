@@ -28,12 +28,28 @@ cd AI-NewsGlance
 pip install -r requirements.txt
 ```
 
-### 3. 安装Playwright浏览器
+### 3. Ubuntu系统依赖安装
+```bash
+# 以下步骤仅适用于Ubuntu系统
+sudo apt-get install -y \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libxrandr2 \
+    libgbm1 \
+    libxkbcommon0 \
+    libasound2 \
+    libatspi2.0-0
+```
+
+### 4. 安装Playwright浏览器
 ```bash
 playwright install
 ```
 
-### 4. 配置环境
+### 5. 配置环境
 复制配置文件模板：
 ```bash
 cp config/config.example.yaml config/config.yaml
