@@ -28,7 +28,12 @@ cd AI-NewsGlance
 pip install -r requirements.txt
 ```
 
-### 3. 配置环境
+### 3. 安装Playwright浏览器
+```bash
+playwright install
+```
+
+### 4. 配置环境
 复制配置文件模板：
 ```bash
 cp config/config.example.yaml config/config.yaml
