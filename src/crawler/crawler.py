@@ -57,18 +57,6 @@ class Crawler:
 
     async def crawl_article(self, article_num: int) -> Optional[Dict]:
         """爬取单篇文章内容"""
-        # 配置Playwright浏览器路径
-        import os
-        from playwright.async_api import async_playwright
-        
-        playwright_browser_path = os.path.join(
-            os.getenv('LOCALAPPDATA'),
-            'ms-playwright',
-            'chromium-1148',
-            'chrome-win',
-            'chrome.exe'
-        )
-        
         article_url = f"{self.base_url}{article_num}"
         schema = {
             "name": "AIbase News Article",
@@ -83,8 +71,7 @@ class Crawler:
         try:
             extraction_strategy = JsonCssExtractionStrategy(schema, verbose=True)
             async with AsyncWebCrawler(
-                verbose=True,
-                browser_executable_path=playwright_browser_path
+                verbose=True
             ) as crawler:
                 result = await crawler.arun(
                     url=article_url,
