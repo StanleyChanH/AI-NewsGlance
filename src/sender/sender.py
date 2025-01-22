@@ -32,10 +32,22 @@ class Sender:
             filtered_content = []
             max_content_length = 4000  # 预留空间给markdown格式
             
+            # 添加标题样式
+            filtered_content.append("## 🌟 AI早报")
+            filtered_content.append("---")
+            
             # 添加主内容（保留所有内容）
             for line in lines:
                 if len('\n'.join(filtered_content)) + len(line) < max_content_length:
-                    filtered_content.append(line)
+                    # 添加emoji和格式优化
+                    if line.startswith("# "):
+                        filtered_content.append(f"## 📰 {line[2:]}")
+                    elif line.startswith("## "):
+                        filtered_content.append(f"### 🔍 {line[3:]}")
+                    elif line.startswith("- "):
+                        filtered_content.append(f"• {line[2:]}")
+                    else:
+                        filtered_content.append(line)
                 else:
                     filtered_content.append("...（内容过长已截断）")
                     break
@@ -43,11 +55,12 @@ class Sender:
             # 添加附录（从raw_articles获取所有文章）
             raw_articles_dir = Path("output/raw_articles")
             if raw_articles_dir.exists():
-                # 获取所有原始文章文件
-                article_files = list(raw_articles_dir.glob("*.md"))
+                # 获取所有原始文章文件并按文件名排序
+                article_files = sorted(raw_articles_dir.glob("*.md"), key=lambda f: f.name)
                 
                 # 初始化appendix
-                appendix = ["\n**附录**："]
+                appendix = ["\n## 📚 附录"]
+                appendix.append("---")
                 remaining_length = max_content_length - len('\n'.join(filtered_content))
                 
                 for article_file in article_files:
@@ -78,7 +91,9 @@ class Sender:
             
             # 将markdown转换为HTML并添加样式
             import markdown
-            html_content = markdown.markdown('\n'.join(filtered_content))
+            # 在附录内容前添加换行
+            content_with_breaks = '\n'.join(filtered_content).replace('\n## 📚 附录', '\n\n## 📚 附录')
+            html_content = markdown.markdown(content_with_breaks)
             
             # 添加CSS样式
             styled_html = f"""
@@ -97,6 +112,11 @@ class Sender:
                             color: #2c3e50;
                             margin-top: 1.5em;
                             margin-bottom: 0.5em;
+                        }}
+                        h2 {{
+                            color: #2980b9;
+                            border-bottom: 2px solid #eee;
+                            padding-bottom: 0.3em;
                         }}
                         a {{
                             color: #3498db;
@@ -123,6 +143,18 @@ class Sender:
                         }}
                         .article-list li {{
                             margin: 10px 0;
+                            padding: 8px;
+                            background: #f8f9fa;
+                            border-radius: 4px;
+                        }}
+                        .emoji {{
+                            margin-right: 8px;
+                        }}
+                        hr {{
+                            border: 0;
+                            height: 1px;
+                            background: #ddd;
+                            margin: 2em 0;
                         }}
                     </style>
                 </head>
@@ -188,10 +220,22 @@ class Sender:
             filtered_content = []
             max_content_length = 4000  # 预留空间给markdown格式
             
+            # 添加标题样式
+            filtered_content.append("## 🌟 AI早报")
+            filtered_content.append("---")
+            
             # 添加主内容（保留所有内容）
             for line in lines:
                 if len('\n'.join(filtered_content)) + len(line) < max_content_length:
-                    filtered_content.append(line)
+                    # 添加emoji和格式优化
+                    if line.startswith("# "):
+                        filtered_content.append(f"## 📰 {line[2:]}")
+                    elif line.startswith("## "):
+                        filtered_content.append(f"### 🔍 {line[3:]}")
+                    elif line.startswith("- "):
+                        filtered_content.append(f"• {line[2:]}")
+                    else:
+                        filtered_content.append(line)
                 else:
                     filtered_content.append("...（内容过长已截断）")
                     break
@@ -203,7 +247,8 @@ class Sender:
                 article_files = list(raw_articles_dir.glob("*.md"))
                 
                 # 初始化appendix
-                appendix = ["\n**附录**："]
+                appendix = ["\n## 📚 附录"]
+                appendix.append("---")
                 remaining_length = max_content_length - len('\n'.join(filtered_content))
                 
                 for article_file in article_files:
